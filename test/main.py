@@ -65,19 +65,10 @@ def video_detection(path_x):
 
             ref, buffer = cv2.imencode('.jpg', img)
             frame = buffer.tobytes()
-            print(data, file=sys.stderr)
 
             emit('yolo_frame', frame, broadcast=True)
             # YOLO 결과 이미지와 변수들을 클라이언트로 전송
             emit('yolo_result', data, broadcast=True)
-            # emit('yolo_result',
-            #      {
-            #          'x1': x1,
-            #          'y1': y1,
-            #          'x2': x2,
-            #          'y2': y2,
-            #          'label': label
-            #      }, broadcast=True)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

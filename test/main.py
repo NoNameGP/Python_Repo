@@ -1,9 +1,10 @@
+import sys
+
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import cv2
 import math
 from ultralytics import YOLO
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'muhammadmoin'
@@ -24,8 +25,6 @@ def handle_disconnect():
 def video_detection(path_x):
     video_capture = path_x
     cap = cv2.VideoCapture(video_capture)
-    frame_width = int(cap.get(3))
-    frame_height = int(cap.get(4))
 
     model = YOLO("../YOLO-Weights/yolov8n.pt")
 
@@ -46,6 +45,7 @@ def video_detection(path_x):
         results = model(img, stream=True)
 
         for r in results:
+            data = []
             boxes = r.boxes
             for box in boxes:
                 x1, y1, x2, y2 = box.xyxy[0]
@@ -61,25 +61,30 @@ def video_detection(path_x):
                 c2 = x1 + t_size[0], y1 - t_size[1] - 3
                 cv2.rectangle(img, (x1, y1), c2, [255, 0, 255], -1, cv2.LINE_AA)
                 cv2.putText(img, label, (x1, y1 - 2), 0, 1, [255, 255, 255], thickness=1, lineType=cv2.LINE_AA)
+                data.append([x1, y1, x2, y2, label])
 
-        ref, buffer = cv2.imencode('.jpg', img)
-        frame = buffer.tobytes()
+            ref, buffer = cv2.imencode('.jpg', img)
+            frame = buffer.tobytes()
+            print(data, file=sys.stderr)
 
-        emit('yolo_frame', frame ,broadcast=True)
-        # YOLO 결과 이미지와 변수들을 클라이언트로 전송
-        emit('yolo_result', {
-            'x1': x1,
-            'y1': y1,
-            'x2': x2,
-            'y2': y2,
-            'label': label
-        }, broadcast=True)
+            emit('yolo_frame', frame, broadcast=True)
+            # YOLO 결과 이미지와 변수들을 클라이언트로 전송
+            emit('yolo_result', data, broadcast=True)
+            # emit('yolo_result',
+            #      {
+            #          'x1': x1,
+            #          'y1': y1,
+            #          'x2': x2,
+            #          'y2': y2,
+            #          'label': label
+            #      }, broadcast=True)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     cap.release()
     cv2.destroyAllWindows()
+
 
 @app.route('/')
 def index():

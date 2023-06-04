@@ -14,25 +14,20 @@
 
         // 'yolo_result' 이벤트를 수신하여 결과 처리
         socket.on('yolo_result', function(data) {
-            var x1 = data.x1;
-            var y1 = data.y1;
-            var x2 = data.x2;
-            var y2 = data.y2;
-            var label = data.label;
-
-            // 이미지와 변수들을 이용하여 결과를 처리하는 코드 작성
-            var resultElement = document.getElementById('result');
-            resultElement.innerHTML = 'Detected Object: ' + label + '<br>'
-                + 'Bounding Box: (' + x1 + ', ' + y1 + ') - (' + x2 + ', ' + y2 + ')<br>';
+            console.log("data:"+ data.length)
+            console.log(data)
+            //일단 연결은 했는데 console로 보면 data여러개로 받아오긴 합니다~~ 표시하는 방법 부탁드려요!
+            for(var i = 0; i < data.length; i++) {
+                // 이미지와 변수들을 이용하여 결과를 처리하는 코드 작성
+                var resultElement = document.getElementById('result');
+                resultElement.innerHTML = 'Detected Object: ' + data[i][4] + '<br>'
+                    + 'Bounding Box: (' + data[i][0] + ', ' + data[i][1] + ') - (' + data[i][2] + ', ' + data[i][3] + ')<br>';
+            }
         });
 
         // 'yolo_frame' 이벤트를 수신하여 프레임을 표시
         socket.on('yolo_frame', function(imageData) {
-            console.log("imageData다ㅏㅏㅏㅏㅏㅏ" + imageData);
             var base64Image = arrayBufferToBase64(imageData);
-            // var imageElement = document.getElementById('image');
-            // imageElement.src = 'data:image/jpeg;base64,' + base64Image;
-            console.log('base다');
             var resultElement = document.getElementById('frame');
             resultElement.innerHTML ='<img src="' + base64Image + '" width="640" height="640">';
         });

@@ -63,10 +63,10 @@ def video_detection(path_x):
                 cv2.putText(img, label, (x1, y1 - 2), 0, 1, [255, 255, 255], thickness=1, lineType=cv2.LINE_AA)
                 data.append([x1, y1, x2, y2, label])
 
-            ref, buffer = cv2.imencode('.jpg', img)
-            frame = buffer.tobytes()
-
-            emit('yolo_frame', frame, broadcast=True)
+            # ref, buffer = cv2.imencode('.jpg', img)
+            # frame = buffer.tobytes()
+            #
+            # emit('yolo_frame', frame, broadcast=True)
             # YOLO 결과 이미지와 변수들을 클라이언트로 전송
             emit('yolo_result', data, broadcast=True)
 

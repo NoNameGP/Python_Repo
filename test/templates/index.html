@@ -25,11 +25,11 @@
         });
 
         // 'yolo_frame' 이벤트를 수신하여 프레임을 표시
-        // socket.on('yolo_frame', function(imageData) {
-        //     var base64Image = arrayBufferToBase64(imageData);
-        //     var resultElement = document.getElementById('frame');
-        //     resultElement.innerHTML ='<img src="' + base64Image + '" width="640" height="640">';
-        // });
+        socket.on('yolo_frame', function(imageData) {
+            var base64Image = arrayBufferToBase64(imageData);
+            var resultElement = document.getElementById('frame');
+            resultElement.innerHTML ='<img src="' + base64Image + '" width="640" height="640">';
+        });
 
 
         // ArrayBuffer를 Base64로 인코딩하는 함수

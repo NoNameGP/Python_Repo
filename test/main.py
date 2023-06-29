@@ -66,7 +66,7 @@ def video_detection(path_x):
             ref, buffer = cv2.imencode('.jpg', img)
             frame = buffer.tobytes()
             # YOLO 이미지를 전송
-            emit('yolo_frame', frame, broadcast=True)
+            # emit('yolo_frame', frame, broadcast=True)
             # YOLO 결과 이미지와 변수들을 클라이언트로 전송
             emit('yolo_result', data, broadcast=True)
             # test

@@ -62,13 +62,15 @@ def video_detection(path_x):
                 cv2.rectangle(img, (x1, y1), c2, [255, 0, 255], -1, cv2.LINE_AA)
                 cv2.putText(img, label, (x1, y1 - 2), 0, 1, [255, 255, 255], thickness=1, lineType=cv2.LINE_AA)
                 data.append([x1, y1, x2, y2, label])
-
+            #image
             ref, buffer = cv2.imencode('.jpg', img)
             frame = buffer.tobytes()
-            #
+            # YOLO 이미지를 전송
             emit('yolo_frame', frame, broadcast=True)
             # YOLO 결과 이미지와 변수들을 클라이언트로 전송
             emit('yolo_result', data, broadcast=True)
+            # test
+            emit('test','good',broadcast=True)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
@@ -86,6 +88,12 @@ def index():
 def handle_yolo_detection(path):
     path_x = 0
     video_detection(path_x)
+
+
+# 이미지 받는 함수
+@socketio.on('orgin_image')
+def origin_image_yolo(image):
+    video_detection(image)
 
 
 if __name__ == '__main__':

@@ -31,6 +31,9 @@
             resultElement.innerHTML ='<img src="' + base64Image + '" width="640" height="640">';
         });
 
+        socket.on('test',function(testData){
+            console.log(testData);
+        });
 
         // ArrayBuffer를 Base64로 인코딩하는 함수
         function arrayBufferToBase64(buffer) {
@@ -47,6 +50,7 @@
 
         // 'yolo_detection' 이벤트를 발생시키고 경로 전송
         socket.emit('yolo_detection', '/Image');
+
     </script>
 </body>
 </html>

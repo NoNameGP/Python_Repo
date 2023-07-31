@@ -13,8 +13,8 @@ pytesseract~=0.3.10
 opencv-contrib-python
 
 flask-socketio==5.3.4
-simple-websocket==0.10.0
 
 
 
 sympy~=1.12
+Werkzeug~=2.3.4

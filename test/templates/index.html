@@ -36,19 +36,19 @@
         });
 
         // ArrayBuffer를 Base64로 인코딩하는 함수
-        // function arrayBufferToBase64(buffer) {
-        //     var binary = '';
-        //     var bytes = new Uint8Array(buffer);
-        //     var len = bytes.byteLength;
-        //
-        //     for (var i = 0; i < len; i++) {
-        //         binary += String.fromCharCode(bytes[i]);
-        //     }
-        //
-        //     return 'data:image/jpeg;base64,' + window.btoa(binary);
-        // }
-        //
-        // // 'yolo_detection' 이벤트를 발생시키고 경로 전송
+        function arrayBufferToBase64(buffer) {
+             var binary = '';
+             var bytes = new Uint8Array(buffer);
+             var len = bytes.byteLength;
+
+             for (var i = 0; i < len; i++) {
+                 binary += String.fromCharCode(bytes[i]);
+             }
+
+             return 'data:image/jpeg;base64,' + window.btoa(binary);
+        }
+
+         // 'yolo_detection' 이벤트를 발생시키고 경로 전송
         socket.emit('yolo_detection', '/Image');
 
     </script>

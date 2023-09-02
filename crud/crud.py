@@ -1,7 +1,6 @@
 from basic import app, db, Puppy
 
 with app.app_context():
-
     # CREATE
     my_puppy = Puppy('Rufus', 5)
     db.session.add(my_puppy)
@@ -25,7 +24,7 @@ with app.app_context():
     db.session.add(first_puppy)
     db.session.commit()
 
-    #DELETE
+    # DELETE
     second_pup = Puppy.query.get(2)
     db.session.delete(second_pup)
     db.session.commit()

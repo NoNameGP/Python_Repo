@@ -23,7 +23,12 @@ def handle_disconnect():
 
 def video_detection(path_x):
     video_capture = path_x
-    cap = cv2.VideoCapture(video_capture)
+
+    cap = cv2.VideoCapture("../test/IMG_5957.MOV")
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+
+    out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10, (frame_width, frame_height))
 
     model = YOLO("../YOLO-Weights/best.pt")
 
@@ -51,7 +56,7 @@ def video_detection(path_x):
             for box in boxes:
                 x1, y1, x2, y2 = box.xyxy[0]
                 x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
-                cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
+                #cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 255), 3)
 
                 conf = math.ceil((box.conf[0] * 100)) / 100
                 cls = int(box.cls[0])
@@ -62,16 +67,18 @@ def video_detection(path_x):
                 c2 = x1 + t_size[0], y1 - t_size[1] - 3
                 cv2.rectangle(img, (x1, y1), c2, [255, 0, 255], -1, cv2.LINE_AA)
                 cv2.putText(img, label, (x1, y1 - 2), 0, 1, [255, 255, 255], thickness=1, lineType=cv2.LINE_AA)
-                data.append([x1, y1, x2, y2, label])
+                #data.append([x1, y1, x2, y2, label])
             #image
-            ref, buffer = cv2.imencode('.jpg', img)
-            frame = buffer.tobytes()
-            # YOLO 이미지를 전송
-            emit('yolo_frame', frame, broadcast=True)
-            # YOLO 결과 이미지와 변수들을 클라이언트로 전송
-            emit('yolo_result', data, broadcast=True)
+            # ref, buffer = cv2.imencode('.jpg', img)
+            # frame = buffer.tobytes()
+            # # YOLO 이미지를 전송
+            # emit('yolo_frame', frame, broadcast=True)
+            # # YOLO 결과 이미지와 변수들을 클라이언트로 전송
+            # emit('yolo_result', data, broadcast=True)
             # test
             # emit('test','good',broadcast=True)
+        out.write(img)
+        cv2.imshow("Image",img)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

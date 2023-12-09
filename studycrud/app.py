@@ -46,13 +46,20 @@ class TodoListResource(Resource):
         if not json_data or 'task' not in json_data:
             return {'error': 'Task is required'}, 400
 
+        new_todo = Todo(task=json_data['task'])
+        db.session.add(new_todo)
+        db.session.commit()
+
         todo_id = max(map(int, todos.keys())) + 1 if todos else 1
         todos[todo_id] = json_data['task']
-        return {todo_id: todos[todo_id]}
+        # return {todo_id: todos[todo_id]}
+
+        return {'id': new_todo.id, 'task': new_todo.task}
 
 
 api.add_resource(TodoListResource, '/todos')
 api.add_resource(TodoResource, '/todos/<int:todo_id>')
+
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(255), nullable=False)

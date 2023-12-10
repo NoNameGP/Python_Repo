@@ -10,10 +10,6 @@ api = Api(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-app = Flask(__name__)
-api = Api(app)
-
-
 class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}
@@ -39,7 +35,11 @@ class TodoResource(Resource):
 
 class TodoListResource(Resource):
     def get(self):
-        return todos
+        todos = Todo.query.all()
+        todo_dict = {}
+        for todo in todos:
+            todo_dict[todo.id] = todo.task
+        return todo_dict
 
     def post(self):
         json_data = request.get_json()

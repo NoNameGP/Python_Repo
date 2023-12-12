@@ -40,3 +40,12 @@
 
 **Database**
 - sqlite
+
+## 📁 Package Structure
+- Image : 사진
+- YOLO-Weights : Yolo 학습 모델
+- studycrud : flaks 서버 구축을 위한 공부 패키지
+- test
+  - templates : 사물인식 결과 test html
+  - main.py : YOLO를 통한 사물인식 및 socket활용을 통한 실시간 데이터 전달
+  - video.py : 사물인식 결과 비디오로 저장 (미사용)

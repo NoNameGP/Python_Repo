@@ -1,4 +1,7 @@
 # 뷰우미 : 저시력장애인을 위한 객체인식기반 AR 보행 앱
+
+<div align="center"><img src="https://github.com/NoNameGP/Python_Repo/assets/106591445/7e7e2bf4-1a9a-436f-8f68-7aa3f6ea0883"/></div>
+
 ## 📆 프로젝트 일정
 기획 기간 : 2022.12 ~ 2023.02
 개발 기간 : 2023.03 ~ 2023.10
@@ -49,3 +52,7 @@
   - templates : 사물인식 결과 test html
   - main.py : YOLO를 통한 사물인식 및 socket활용을 통한 실시간 데이터 전달
   - video.py : 사물인식 결과 비디오로 저장 (미사용)
+
+
+## 💾 데이터베이스 ERD
+![erd](https://github.com/NoNameGP/Python_Repo/assets/106591445/775aa3f6-6b70-4dd9-a150-6effeb13ef09)

@@ -56,3 +56,4 @@
 
 ## 💾 데이터베이스 ERD
 ![erd](https://github.com/NoNameGP/Python_Repo/assets/106591445/775aa3f6-6b70-4dd9-a150-6effeb13ef09)
+* JAVA에서 flask로 이전 중

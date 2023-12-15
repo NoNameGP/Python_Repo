@@ -1,5 +1,10 @@
-class User:
-    def __init__(self, id, username, password):
-        self.id = id
-        self.username = username
-        self.password = password
+from ..config import db
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return f"User {self.id}: {self.username}"

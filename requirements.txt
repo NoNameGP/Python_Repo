@@ -21,3 +21,6 @@ Werkzeug~=2.3.4
 
 Flask-Migrate
 Flask-SQLAlchemy
+
+SQLAlchemy~=2.0.20
+alembic~=1.11.3

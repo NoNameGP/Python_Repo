@@ -9,10 +9,10 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=True)
     status = db.Column(db.String(255), nullable=False, server_default='Active')
-    createAt = db.Column(db.dateTime, nullable=False, default=datetime.utcnow)
+    createAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     marks = relationship('Mark', back_populates='user')
 
-    def __init__(self,username,password):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
 

@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///viewMe.db'  # SQLite 데이터베이스
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///api/viewMe.db'  # SQLite 데이터베이스
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 api = Api(app)

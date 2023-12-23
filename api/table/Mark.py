@@ -3,12 +3,14 @@ from datetime import datetime
 from sqlalchemy.orm import relationship
 
 
-class Object(db.Model):
+class Mark(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    x = db.Column(db.Integer, nullable=False)
-    y = db.Column(db.Integer, nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey('User.id'), nullable=False)
+    user = relationship('User', back_populates='Marks')
+    name = db.Column(db.String(255), nullable=True)
+    endPoint = db.Column(db.Long)
     status = db.Column(db.String(255), nullable=False, server_default='Active')
     createAt = db.Column(db.dateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"장애물 {self.id} : {self.x} , {self.y}"
+        return f"Mark {self.name}: {self.endPoint}"

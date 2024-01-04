@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
-from flask_restful import Api
 from models.model import db
-from controllers.controller import TodoListResource
+from routes.route import Route
 
 
 def create_app():
@@ -13,8 +12,7 @@ def create_app():
 
 
 app = create_app()
-api = Api(app)
-api.add_resource(TodoListResource, '/todos')
+Route(app)
 migrate = Migrate(app, db)
 
 if __name__ == '__main__':

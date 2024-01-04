@@ -16,8 +16,8 @@ class TodoListResource(Resource):
         if not json_data or 'email' not in json_data:
             return {'error': 'User is required'}, 400
 
-        new_user = User(email=json_data['email'])
+        new_user = User(json_data['email'],json_data['password'])
         db.session.add(new_user)
         db.session.commit()
 
-        return {'id': new_user.id, 'task': new_user.email}
+        return {'id': new_user.id, 'task': new_user.email, 'password': new_user.password}

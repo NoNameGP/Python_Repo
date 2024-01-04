@@ -11,11 +11,12 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     status = db.Column(db.String(255), nullable=False, server_default='Active')
     createAt = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    marks = relationship('Mark', back_populates='user')
-    routes = relationship('Route', back_populates='user')
+    marks = relationship('Mark', back_populates='markOwner')
+    routes = relationship('Route', back_populates='routeOwner')
 
-    def __init__(self, email):
+    def __init__(self, email,password):
         self.email = email
+        self.password = password
 
     def __repr__(self):
         return f"User {self.id}: {self.username}"
@@ -24,7 +25,7 @@ class User(db.Model):
 class Mark(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = relationship('User', back_populates='marks')
+    markOwner = relationship('User', back_populates='marks')
     name = db.Column(db.String(255), nullable=False)
     endX = db.Column(db.Float)
     endY = db.Column(db.Float)
@@ -48,7 +49,7 @@ class Object(db.Model):
 class PassPoint(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     route = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
-    passPointOwner = relationship('Route', back_populates='passpoints')
+    passPointOwner = relationship('Route', back_populates='passPoints')
 
     pointX = db.Column(db.Float)
     pointY = db.Column(db.Float)
@@ -67,8 +68,8 @@ class Route(db.Model):
     endX = db.Column(db.Float)
     endY = db.Column(db.Float)
 
-    objects = relationship('Object', back_populates='objects')
-    passpoints = relationship('PassPoint', back_populates='passpoints')
+    objects = relationship('Object', back_populates='objectOwner')
+    passPoints = relationship('PassPoint', back_populates='passPointOwner')
 
     def __repr__(self):
         return f"Route {self.user.id}: {self.startX},{self.startY}"

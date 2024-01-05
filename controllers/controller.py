@@ -1,6 +1,6 @@
 from flask_restful import Resource
 from flask import request
-from models.model import User,db
+from models.model import User, db
 
 
 class TodoListResource(Resource):
@@ -11,12 +11,13 @@ class TodoListResource(Resource):
             todo_dict[todo.id] = todo.email
         return todo_dict
 
+
     def post(self):
         json_data = request.get_json()
         if not json_data or 'email' not in json_data:
             return {'error': 'User is required'}, 400
 
-        new_user = User(json_data['email'],json_data['password'])
+        new_user = User(json_data['email'], json_data['password'])
         db.session.add(new_user)
         db.session.commit()
 

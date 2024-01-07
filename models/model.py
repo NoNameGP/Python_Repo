@@ -1,8 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sqlalchemy.orm import relationship
+from flask_login import UserMixin
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
 
 db = SQLAlchemy()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
 
 
 class BaseModel:
@@ -15,7 +20,7 @@ class Coordinate:
     Y = db.Column(db.Float)
 
 
-class User(db.Model, BaseModel):
+class User(db.Model, BaseModel, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), nullable=True)
     password = db.Column(db.String(255), nullable=False)
@@ -27,7 +32,17 @@ class User(db.Model, BaseModel):
         self.password = password
 
     def __repr__(self):
-        return f"User {self.id}: {self.username}"
+        return f"User {self.id}: {self.email}"
+
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
+    @login_manager.user_loader
+    def load_user(self):
+        return User.query.get(int(self))
 
 
 class Mark(db.Model, BaseModel, Coordinate):
@@ -40,7 +55,7 @@ class Mark(db.Model, BaseModel, Coordinate):
         return f"Mark {self.name}: {self.endX}"
 
 
-class Object(db.Model, BaseModel,Coordinate):
+class Object(db.Model, BaseModel, Coordinate):
     id = db.Column(db.Integer, primary_key=True)
     route = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     objectOwner = relationship('Route', back_populates='objects')
@@ -49,7 +64,7 @@ class Object(db.Model, BaseModel,Coordinate):
         return f"Object {self.route}: {self.pointX},{self.pointY}"
 
 
-class PassPoint(db.Model, BaseModel,Coordinate):
+class PassPoint(db.Model, BaseModel, Coordinate):
     id = db.Column(db.Integer, primary_key=True)
     route = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     passPointOwner = relationship('Route', back_populates='passPoints')

@@ -26,3 +26,4 @@ SQLAlchemy~=2.0.20
 alembic~=1.11.3
 
 Flask-login
+Flask-Bcrypt

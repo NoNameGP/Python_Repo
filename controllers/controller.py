@@ -32,7 +32,7 @@ class Session(Resource):
         json_data = request.get_json()
 
         user_service = UserService()
-        UserService.loginUser(user_service, json_data)
+        UserService.login_user(user_service, json_data)
 
         return {'success': True, 'message': 'Login successful'}, 200
 

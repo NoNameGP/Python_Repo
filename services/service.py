@@ -15,7 +15,7 @@ class UserService:
 
         return new_user, {'success': True, 'message': '가입 가능한 이메일입니다.'}
 
-    def loginUser(self, json_data):
+    def login_user(self, json_data):
         user = User.query.filter_by(email=json_data['email']).first()
 
         if user and user.check_password(json_data['password']):

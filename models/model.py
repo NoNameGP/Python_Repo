@@ -44,6 +44,10 @@ class User(db.Model, BaseModel, UserMixin):
     def load_user(self):
         return User.query.get(int(self))
 
+    @staticmethod
+    def find_user(email):
+        return User.query.filter_by(email=email).first()
+
 
 class Mark(db.Model, BaseModel, Coordinate):
     id = db.Column(db.Integer, primary_key=True)

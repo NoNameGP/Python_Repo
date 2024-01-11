@@ -1,4 +1,4 @@
-from models.model import User
+from models.model import User, Route
 from flask_login import login_user
 
 
@@ -21,3 +21,10 @@ class UserService:
         if user and user.check_password(json_data['password']):
             login_user(user)
             return {'success': True, 'message': '로그인 성공'}, 200
+
+
+class RouteService:
+    def save_route(self, routeDTO):
+        user = User.find_user(routeDTO.email)
+
+        return Route(user, routeDTO.start_point,routeDTO.end_point)

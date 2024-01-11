@@ -7,3 +7,4 @@ class Route:
         api = Api(app)
         api.add_resource(UserResource, '/user')
         api.add_resource(Session, '/session')
+        api.add_resource(RouteResource, "/route")

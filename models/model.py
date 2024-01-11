@@ -41,8 +41,8 @@ class User(db.Model, BaseModel, UserMixin):
         return bcrypt.check_password_hash(self.password, password)
 
     @login_manager.user_loader
-    def load_user(self):
-        return User.query.get(int(self))
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
     @staticmethod
     def find_user(email):
@@ -90,5 +90,12 @@ class Route(db.Model, BaseModel):
     objects = relationship('Object', back_populates='objectOwner')
     passPoints = relationship('PassPoint', back_populates='passPointOwner')
 
+    def __init__(self, user, start_point, end_point):
+        self.user = user.id
+        self.startX = start_point['X']
+        self.startY = start_point['Y']
+        self.endX = end_point['X']
+        self.endY = end_point['Y']
+
     def __repr__(self):
-        return f"Route {self.user.id}: {self.startX},{self.startY}"
+        return f"Route: {self.user.id},{self.id}"

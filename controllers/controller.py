@@ -3,6 +3,7 @@ from flask import request
 from models.model import db
 from flask_login import logout_user, login_required
 from services.service import *
+from dto.dto import *
 
 
 class UserResource(Resource):
@@ -14,7 +15,7 @@ class UserResource(Resource):
         args = parser.parse_args()
 
         user_service = UserService()
-        user, response = UserService.register_user(user_service,args)
+        user, response = UserService.register_user(user_service, args)
 
         if not response['success']:
             return response, 400
@@ -40,3 +41,17 @@ class Session(Resource):
     def patch(self):
         logout_user()
         return {'success': True, 'message': 'Logout successful'}, 200
+
+
+class RouteResource(Resource):
+    def post(self):
+        data = request.get_json()
+
+        route_service = RouteService()
+        routeReq = RouteDTO(**data)
+        route = route_service.save_route(routeReq)
+
+        db.session.add(route)
+        db.session.commit()
+
+        return {'success': True, 'message': '경로 추가 완료'}, 200

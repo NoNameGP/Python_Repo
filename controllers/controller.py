@@ -47,11 +47,18 @@ class RouteResource(Resource):
     def post(self):
         data = request.get_json()
 
-        route_service = RouteService()
         routeReq = RouteDTO(**data)
-        route = route_service.save_route(routeReq)
 
+        route_service = RouteService()
+        route = route_service.save_route(routeReq)
         db.session.add(route)
+        db.session.commit()
+
+        passpoint_service = PassPointService()
+        passpoints = passpoint_service.save_pass_point(routeReq,route)
+
+        db.session.bulk_save_objects(passpoints)
+
         db.session.commit()
 
         return {'success': True, 'message': '경로 추가 완료'}, 200

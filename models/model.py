@@ -73,6 +73,11 @@ class PassPoint(db.Model, BaseModel, Coordinate):
     route = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     passPointOwner = relationship('Route', back_populates='passPoints')
 
+    def __init__(self, route, X, Y):
+        self.route = route.id
+        self.X = X
+        self.Y = Y
+
     def __repr__(self):
         return f"PassPoint {self.route}: {self.pointX},{self.pointY}"
 

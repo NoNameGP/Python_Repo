@@ -1,4 +1,4 @@
-from models.model import User, Route
+from models.model import User, Route, PassPoint
 from flask_login import login_user
 
 
@@ -28,3 +28,7 @@ class RouteService:
         user = User.find_user(routeDTO.email)
 
         return Route(user, routeDTO.start_point,routeDTO.end_point)
+
+class PassPointService:
+    def save_pass_point(self, routeDTO, route):
+        return [PassPoint(route, **passpoint) for passpoint in routeDTO.pass_points]

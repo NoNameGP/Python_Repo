@@ -64,6 +64,11 @@ class Object(db.Model, BaseModel, Coordinate):
     route = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     objectOwner = relationship('Route', back_populates='objects')
 
+    def __init__(self, route, X, Y):
+        self.route = route.id
+        self.X = X
+        self.Y = Y
+
     def __repr__(self):
         return f"Object {self.route}: {self.pointX},{self.pointY}"
 

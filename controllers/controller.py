@@ -55,9 +55,13 @@ class RouteResource(Resource):
         db.session.commit()
 
         passpoint_service = PassPointService()
-        passpoints = passpoint_service.save_pass_point(routeReq,route)
+        passpoints = passpoint_service.save_pass_point(routeReq.pass_points, route)
+
+        object_service = ObjectService()
+        objects = object_service.save_object(routeReq.objects, route)
 
         db.session.bulk_save_objects(passpoints)
+        db.session.bulk_save_objects(objects)
 
         db.session.commit()
 

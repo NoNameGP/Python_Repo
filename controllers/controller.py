@@ -54,15 +54,35 @@ class RouteResource(Resource):
         db.session.add(route)
         db.session.commit()
 
-        passpoint_service = PassPointService()
-        passpoints = passpoint_service.save_pass_point(routeReq.pass_points, route)
+        pass_point_controller = PassPointController()
+        pass_point_controller.save_pass_points(routeReq.pass_points, route)
 
-        object_service = ObjectService()
-        objects = object_service.save_object(routeReq.objects, route)
-
-        db.session.bulk_save_objects(passpoints)
-        db.session.bulk_save_objects(objects)
+        object_controller = ObjectController()
+        object_controller.save_object(routeReq.objects,route)
 
         db.session.commit()
 
         return {'success': True, 'message': '경로 추가 완료'}, 200
+
+
+class PassPointController:
+    global pass_point_service
+
+    def __init__(self):
+        self.pass_point_service = PassPointService()
+
+    def save_pass_points(self, pass_points, route):
+        passpoints = pass_point_service.save_pass_point(pass_points, route)
+        db.session.bulk_save_objects(passpoints)
+
+
+class ObjectController:
+    global object_service
+
+    def __init__(self):
+        self.object_service = ObjectService()
+
+    def save_object(self, objects, route):
+        objects = object_service.save_object(objects, route)
+
+        db.session.bulk_save_objects(objects)

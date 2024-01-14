@@ -55,6 +55,12 @@ class Mark(db.Model, BaseModel, Coordinate):
     markOwner = relationship('User', back_populates='marks')
     name = db.Column(db.String(255), nullable=False)
 
+    def __init__(self, user, name, point):
+        self.userId = user.id
+        self.name = name
+        self.X = point['X']
+        self.Y = point['Y']
+
     def __repr__(self):
         return f"Mark {self.name}: {self.endX}"
 

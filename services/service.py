@@ -1,4 +1,4 @@
-from models.model import User, Route, PassPoint, Object
+from models.model import User, Route, PassPoint, Object, Mark
 from flask_login import login_user
 
 
@@ -38,3 +38,10 @@ class PassPointService:
 class ObjectService:
     def save_object(self, objects, route):
         return [Object(route, **object) for object in objects]
+
+
+class MarkService:
+    def save_object(self, mark_dto):
+        user = User.find_user(mark_dto.email)
+
+        return Mark(user, mark_dto.mark_name, mark_dto.end_point)

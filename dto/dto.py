@@ -15,3 +15,10 @@ class RouteDTO:
     end_point: Point
     pass_points: List[Point]
     objects: List[Point]
+
+
+@dataclass
+class MarkDTO:
+    email: str
+    mark_name: str
+    end_point: Point

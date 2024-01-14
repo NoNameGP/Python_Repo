@@ -58,11 +58,27 @@ class RouteResource(Resource):
         pass_point_controller.save_pass_points(routeReq.pass_points, route)
 
         object_controller = ObjectController()
-        object_controller.save_object(routeReq.objects,route)
+        object_controller.save_object(routeReq.objects, route)
 
         db.session.commit()
 
         return {'success': True, 'message': '경로 추가 완료'}, 200
+
+
+class MarkResourece(Resource):
+    def post(self):
+        data = request.get_json()
+
+        mark_data = MarkDTO(**data)
+
+        mark_service = MarkService()
+
+        mark = mark_service.save_object(mark_data)
+
+        db.session.add(mark)
+        db.session.commit()
+
+        return {'success': True, 'message': '즐겨찾기 추가 완료'}, 200
 
 
 class PassPointController:

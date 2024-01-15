@@ -4,21 +4,21 @@ from flask_login import login_user
 
 class UserService:
 
-    def register_user(self, args):
-        user = User.find_user(args['email'])
+    def register_user(self, userDTO):
+        user = User.find_user(userDTO.email)
 
         if user:
             return None, {'success': False, 'message': '이미 가입된 이메일입니다.'}
 
-        new_user = User(email=args['email'], password=args['password'])
-        new_user.set_password(args['password'])
+        new_user = User(userDTO.email, userDTO.password)
+        new_user.set_password(userDTO.password)
 
         return new_user, {'success': True, 'message': '가입 가능한 이메일입니다.'}
 
-    def login_user(self, json_data):
-        user = User.find_user(json_data['email'])
+    def login_user(self, userDTO):
+        user = User.find_user(userDTO.email)
 
-        if user and user.check_password(json_data['password']):
+        if user and user.check_password(userDTO.password):
             login_user(user)
             return {'success': True, 'message': '로그인 성공'}, 200
 

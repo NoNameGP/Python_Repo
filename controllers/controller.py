@@ -9,13 +9,11 @@ from dto.dto import *
 class UserResource(Resource):
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('email', type=str, required=True, help='Email cannot be blank')
-        parser.add_argument('password', type=str, required=True, help='Password cannot be blank')
-        args = parser.parse_args()
+        data = request.get_json()
 
+        user_data = UserDTO(**data)
         user_service = UserService()
-        user, response = UserService.register_user(user_service, args)
+        user, response = UserService.register_user(user_service, user_data)
 
         if not response['success']:
             return response, 400
@@ -33,7 +31,7 @@ class Session(Resource):
         json_data = request.get_json()
 
         user_service = UserService()
-        UserService.login_user(user_service, json_data)
+        UserService.login_user(user_service, UserDTO(**json_data))
 
         return {'success': True, 'message': 'Login successful'}, 200
 

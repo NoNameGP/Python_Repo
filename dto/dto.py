@@ -22,3 +22,9 @@ class MarkDTO:
     email: str
     mark_name: str
     end_point: Point
+
+
+@dataclass
+class UserDTO:
+    email: str
+    password: str

@@ -98,20 +98,16 @@ class Route(db.Model, BaseModel):
     user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     routeOwner = relationship('User', back_populates='routes')
 
-    startX = db.Column(db.Float)
-    startY = db.Column(db.Float)
-    endX = db.Column(db.Float)
-    endY = db.Column(db.Float)
+    departure = db.Column(db.String(255))
+    arrival = db.Column(db.String(255))
 
     objects = relationship('Object', back_populates='objectOwner')
     passPoints = relationship('PassPoint', back_populates='passPointOwner')
 
-    def __init__(self, user, start_point, end_point):
+    def __init__(self, user, departure, arrival):
         self.user = user.id
-        self.startX = start_point['X']
-        self.startY = start_point['Y']
-        self.endX = end_point['X']
-        self.endY = end_point['Y']
+        self.departure = departure
+        self.arrival = arrival
 
     def __repr__(self):
         return f"Route: {self.user.id},{self.id}"

@@ -27,7 +27,7 @@ class RouteService:
     def save_route(self, routeDTO):
         user = User.find_user(routeDTO.email)
 
-        return Route(user, routeDTO.start_point, routeDTO.end_point)
+        return Route(user, routeDTO.departure, routeDTO.arrival)
 
 
 class PassPointService:

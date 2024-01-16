@@ -11,8 +11,8 @@ class Point:
 @dataclass
 class RouteDTO:
     email: str
-    start_point: Point
-    end_point: Point
+    departure: str
+    arrival: str
     pass_points: List[Point]
     objects: List[Point]
 

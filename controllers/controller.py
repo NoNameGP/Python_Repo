@@ -1,7 +1,7 @@
 from flask_restful import Resource, reqparse
 from flask import request
 from models.model import db
-from flask_login import logout_user, login_required
+from flask_login import logout_user, login_required, login_user
 from services.service import *
 from dto.dto import *
 
@@ -86,7 +86,7 @@ class PassPointController:
         self.pass_point_service = PassPointService()
 
     def save_pass_points(self, pass_points, route):
-        passpoints = pass_point_service.save_pass_point(pass_points, route)
+        passpoints = self.pass_point_service.save_pass_point(pass_points, route)
         db.session.bulk_save_objects(passpoints)
 
 
@@ -97,6 +97,6 @@ class ObjectController:
         self.object_service = ObjectService()
 
     def save_object(self, objects, route):
-        objects = object_service.save_object(objects, route)
+        objects = self.object_service.save_object(objects, route)
 
         db.session.bulk_save_objects(objects)

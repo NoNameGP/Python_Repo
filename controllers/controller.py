@@ -78,6 +78,10 @@ class MarkResourece(Resource):
 
         return {'success': True, 'message': '즐겨찾기 추가 완료'}, 200
 
+    def get(self, email):
+        mark_service = MarkService()
+        return mark_service.find_marks(email)
+
 
 class PassPointController:
     global pass_point_service

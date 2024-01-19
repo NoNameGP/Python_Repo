@@ -45,3 +45,7 @@ class MarkService:
         user = User.find_user(mark_dto.email)
 
         return Mark(user, mark_dto.mark_name, mark_dto.end_point)
+
+    def find_marks(self, email):
+        user = User.find_user(email)
+        return [mark.to_dict()for mark in user.find_user_marks()]

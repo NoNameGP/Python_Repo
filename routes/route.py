@@ -8,4 +8,4 @@ class Route:
         api.add_resource(UserResource, '/user')
         api.add_resource(Session, '/session')
         api.add_resource(RouteResource, "/route")
-        api.add_resource(MarkResourece,'/mark')
+        api.add_resource(MarkResourece, '/mark', '/mark/<string:email>')

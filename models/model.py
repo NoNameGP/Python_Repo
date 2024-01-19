@@ -44,6 +44,9 @@ class User(db.Model, BaseModel, UserMixin):
     def load_user(user_id):
         return User.query.get(int(user_id))
 
+    def find_user_marks(self):
+        return self.marks
+
     @staticmethod
     def find_user(email):
         return User.query.filter_by(email=email).first()
@@ -63,6 +66,12 @@ class Mark(db.Model, BaseModel, Coordinate):
 
     def __repr__(self):
         return f"Mark {self.name}: {self.endX}"
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'point': {'X': self.X, 'Y': self.Y}
+        }
 
 
 class Object(db.Model, BaseModel, Coordinate):

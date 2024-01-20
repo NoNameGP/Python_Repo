@@ -29,6 +29,16 @@ class RouteService:
 
         return Route(user, routeDTO.departure, routeDTO.arrival)
 
+    def find_route(self, departure, arrival):
+        global best_route
+        min = 1000
+        for route in Route.find_route(departure, arrival):
+            if min > len(route.find_objects()):
+                best_route = route
+                min = len(route.find_objects())
+
+        return best_route
+
 
 class PassPointService:
     def save_pass_point(self, pass_points, route):

@@ -85,7 +85,13 @@ class Object(db.Model, BaseModel, Coordinate):
         self.Y = Y
 
     def __repr__(self):
-        return f"Object {self.route}: {self.pointX},{self.pointY}"
+        return f"Object {self.route}: {self.X},{self.Y}"
+
+    def to_dict(self):
+        return {
+            'route': self.route,
+            'point': {'X': self.X, 'Y': self.Y}
+        }
 
 
 class PassPoint(db.Model, BaseModel, Coordinate):
@@ -100,6 +106,12 @@ class PassPoint(db.Model, BaseModel, Coordinate):
 
     def __repr__(self):
         return f"PassPoint {self.route}: {self.pointX},{self.pointY}"
+
+    def to_dict(self):
+        return {
+            'route': self.route,
+            'point': {'X': self.X, 'Y': self.Y}
+        }
 
 
 class Route(db.Model, BaseModel):
@@ -120,3 +132,19 @@ class Route(db.Model, BaseModel):
 
     def __repr__(self):
         return f"Route: {self.user.id},{self.id}"
+    @staticmethod
+    def find_route(departure,arrival):
+        return Route.query.filter_by(departure=departure, arrival=arrival)
+    def find_objects(self):
+        return self.objects
+
+    def find_pass_points(self):
+        return self.passPoints
+
+    def to_dict(self):
+        return {
+            'departure' : self.departure,
+            'arrival' : self.arrival,
+            'objects' : [object.to_dict() for object in self.objects],
+            'passpoints' : [passPoint.to_dict() for passPoint in self.passPoints]
+        }

@@ -62,6 +62,11 @@ class RouteResource(Resource):
 
         return {'success': True, 'message': '경로 추가 완료'}, 200
 
+    def get(self, departure, arrival):
+        route_service = RouteService()
+
+        return route_service.find_route(departure,arrival).to_dict()
+
 
 class MarkResourece(Resource):
     def post(self):

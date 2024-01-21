@@ -4,6 +4,7 @@ from models.model import db
 from flask_login import logout_user, login_required, login_user
 from services.service import *
 from dto.dto import *
+from controllers.BaseResponse import BaseResponse
 
 
 class UserResource(Resource):
@@ -23,7 +24,7 @@ class UserResource(Resource):
 
         login_user(user)
 
-        return {'success': True, 'message': '회원가입과 로그인 성공'}, 200
+        return BaseResponse(True,'회원가입과 로그인 성공').to_response()
 
 
 class Session(Resource):
@@ -32,13 +33,12 @@ class Session(Resource):
 
         user_service = UserService()
         UserService.login_user(user_service, UserDTO(**json_data))
-
-        return {'success': True, 'message': 'Login successful'}, 200
+        return BaseResponse(True, "로그인 성공").to_response()
 
     @login_required
     def patch(self):
         logout_user()
-        return {'success': True, 'message': 'Logout successful'}, 200
+        return BaseResponse(True, '로그 아웃 성공').to_response()
 
 
 class RouteResource(Resource):
@@ -60,12 +60,13 @@ class RouteResource(Resource):
 
         db.session.commit()
 
-        return {'success': True, 'message': '경로 추가 완료'}, 200
+        return BaseResponse(True, '경로 추가 성공').to_response()
 
     def get(self, departure, arrival):
         route_service = RouteService()
 
-        return route_service.find_route(departure,arrival).to_dict()
+        best_route = route_service.find_route(departure,arrival).to_dict()
+        return BaseResponse(True, '장애물이 적은 경로 조회 성공', data=best_route).to_response()
 
 
 class MarkResourece(Resource):
@@ -81,7 +82,7 @@ class MarkResourece(Resource):
         db.session.add(mark)
         db.session.commit()
 
-        return {'success': True, 'message': '즐겨찾기 추가 완료'}, 200
+        return BaseResponse(True, '즐겨찾기 추가 완료').to_response()
 
     def get(self, email):
         mark_service = MarkService()

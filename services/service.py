@@ -2,6 +2,7 @@ from models.model import User, Route, PassPoint, Object, Mark
 from flask_login import login_user
 
 
+
 class UserService:
 
     def register_user(self, userDTO):
@@ -11,7 +12,6 @@ class UserService:
             return None, {'success': False, 'message': '이미 가입된 이메일입니다.'}
 
         new_user = User(userDTO.email, userDTO.password)
-        new_user.set_password(userDTO.password)
 
         return new_user, {'success': True, 'message': '가입 가능한 이메일입니다.'}
 

@@ -24,7 +24,7 @@ class UserResource(Resource):
 
         login_user(user)
 
-        return BaseResponse(True,'회원가입과 로그인 성공').to_response()
+        return BaseResponse(True, '회원가입과 로그인 성공').to_response()
 
 
 class Session(Resource):
@@ -65,7 +65,7 @@ class RouteResource(Resource):
     def get(self, departure, arrival):
         route_service = RouteService()
 
-        best_route = route_service.find_route(departure,arrival).to_dict()
+        best_route = route_service.find_route(departure, arrival).to_dict()
         return BaseResponse(True, '장애물이 적은 경로 조회 성공', data=best_route).to_response()
 
 
@@ -86,7 +86,8 @@ class MarkResourece(Resource):
 
     def get(self, email):
         mark_service = MarkService()
-        return mark_service.find_marks(email)
+        mark = mark_service.find_marks(email)
+        return BaseResponse(True, '즐겨 찾기 조회 성공', data=mark).to_response()
 
 
 class PassPointController:

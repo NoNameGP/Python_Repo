@@ -4,7 +4,8 @@
 
 ## 📆 프로젝트 일정
 기획 기간 : 2022.12 ~ 2023.02
-개발 기간 : 2023.03 ~ 2023.10
+집중 개발 기간 : 2023.03 ~ 2023.10
+유지 보수 기간 : 2023.12 ~
 
 ## 🫂팀원
 <table>
@@ -37,23 +38,25 @@
 - flask-socketio
 - Flask-Migrate
 - Flask-SQLAlchemy
-
-**Infra**
-- AWS EC2
+- Flask-login
+- Flask-Bcrypt
 
 **Database**
 - sqlite
 
 ## 📁 Package Structure
-- Image : 사진
-- YOLO-Weights : Yolo 학습 모델
-- studycrud : flaks 서버 구축을 위한 공부 패키지
-- test
-  - templates : 사물인식 결과 test html
-  - main.py : YOLO를 통한 사물인식 및 socket활용을 통한 실시간 데이터 전달
-  - video.py : 사물인식 결과 비디오로 저장 (미사용)
-
+- YOLO-Weights : 학습된 YOLO 모델
+- controllers
+- dto
+- instance : DB파일
+- migrations : DB 변경 사항
+- models
+- routes : controllers API 등록 계층
+- services
+- test : YOLO 실행 test 파
 
 ## 💾 데이터베이스 ERD
 ![erd](https://github.com/NoNameGP/Python_Repo/assets/106591445/775aa3f6-6b70-4dd9-a150-6effeb13ef09)
-* JAVA에서 flask로 이전 중
+
+## 최적의 길찾기 알고리즘
+![viewMe 알고리즘](https://github.com/NoNameGP/Python_Repo/assets/106591445/eac9fc43-92bd-421d-afe1-e7c6d4e35911)

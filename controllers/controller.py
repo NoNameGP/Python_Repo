@@ -1,10 +1,14 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from flask import request
 from models.model import db
-from flask_login import logout_user, login_required, login_user
+from flask_login import logout_user, login_required
 from services.service import *
 from dto.dto import *
 from controllers.BaseResponse import BaseResponse
+from flask_socketio import SocketIO, emit
+import cv2
+import math
+from ultralytics import YOLO
 
 
 class UserResource(Resource):
@@ -111,3 +115,60 @@ class ObjectController:
         objects = self.object_service.save_object(objects, route)
 
         db.session.bulk_save_objects(objects)
+
+
+socketio = SocketIO()
+
+
+class YoloController:
+    def video_detection(self):
+
+        cap = cv2.VideoCapture(0)
+
+        model = YOLO("../YOLO-Weights/best.pt")
+
+        # classNames = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
+        #               "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
+        #               "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
+        #               "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
+        #               "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
+        #               "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
+        #               "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
+        #               "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
+        #               "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
+        #               "teddy bear", "hair drier", "toothbrush"
+        #               ]
+
+        classNames = ["green", "red"]
+
+        while True:
+            success, img = cap.read()
+            results = model(img, stream=True)
+
+            for r in results:
+                data = []
+                boxes = r.boxes
+                for box in boxes:
+                    x1, y1, x2, y2 = box.xyxy[0]
+                    x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+
+                    conf = math.ceil((box.conf[0] * 100)) / 100
+                    cls = int(box.cls[0])
+                    class_name = classNames[cls]
+                    label = f'{class_name}{conf}'
+
+                    data.append([x1, y1, x2, y2, label])
+                # image
+                # ref, buffer = cv2.imencode('.jpg', img)
+                # frame = buffer.tobytes()
+                # # YOLO 이미지를 전송
+                # emit('yolo_frame', frame, broadcast=True)
+                # # YOLO 결과 이미지와 변수들을 클라이언트로 전송
+                emit('yolo_result', data, broadcast=True)
+                # test
+                # emit('test','good',broadcast=True)
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+        cap.release()

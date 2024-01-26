@@ -28,3 +28,13 @@ class MarkDTO:
 class UserDTO:
     email: str
     password: str
+
+
+@dataclass
+class YoloResultDTO:
+    x1: int
+    y1: int
+    x2: int
+    y2: int
+    class_name: str
+    conf: float

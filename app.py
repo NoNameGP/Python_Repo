@@ -22,7 +22,7 @@ migrate = Migrate(app, db)
 login_manager.init_app(app)
 
 socketio = SocketIO(app)
-socketio.init_app(app, transports=['websocket', 'polling'])
+# socketio.init_app(app, transports=['websocket', 'polling'])
 
 
 class ClassNames:
@@ -55,7 +55,7 @@ class YOLOService:
 
                 data.append([x1, y1, x2, y2, class_name, conf])
             # # YOLO 결과 변수들을 클라이언트로 전송
-            emit('yolo_result', data, broadcast=True)
+            emit('yolo_result', data)
 
 
 class YOLOController:

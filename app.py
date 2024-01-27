@@ -26,16 +26,16 @@ socketio = SocketIO(app)
 
 
 class ClassNames:
-    yolo = ["person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat",
-            "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat",
-            "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella",
-            "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat",
-            "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup",
-            "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli",
-            "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed",
-            "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone",
-            "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors",
-            "teddy bear", "hair drier", "toothbrush"]
+    coco = ['person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'train',
+            'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter',
+            'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra',
+            'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis',
+            'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
+            'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon',
+            'bowl', 'banana', 'apple', 'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
+            'donut', 'cake', 'chair', 'sofa', 'pottedplant', 'bed', 'diningtable', 'toilet', 'tvmonitor',
+            'laptop', 'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink',
+            'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
     best = ["green", "red"]
 
@@ -51,7 +51,8 @@ class YOLOService:
 
                 conf = math.ceil((box.conf[0] * 100)) / 100
                 cls = int(box.cls[0])
-                class_name = class_names[cls]
+                if cls in [0, 1, 2, 3, 5, 7, 9]:
+                    class_name = class_names[cls]
 
                 data.append([x1, y1, x2, y2, class_name, conf])
             # # YOLO 결과 변수들을 클라이언트로 전송
@@ -59,9 +60,9 @@ class YOLOService:
 
 
 class YOLOController:
-    def __init__(self):
+    def __init__(self, model="../YOLO-Weights/best.pt"):
         self.cap = cv2.VideoCapture(0)
-        self.model = YOLO("../YOLO-Weights/best.pt")
+        self.model = YOLO(model)
         self.class_names = ClassNames.best
 
     def video_detection(self):
@@ -83,7 +84,7 @@ def index():
 
 @socketio.on('yolo_detection')
 def handle_yolo_detection(path):
-    YOLOController().video_detection()
+    YOLOController(path).video_detection()
 
 
 if __name__ == '__main__':

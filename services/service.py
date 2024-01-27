@@ -1,4 +1,4 @@
-from models.model import User, Route, PassPoint, Object, Mark
+from models.model import User, Route, Object, Mark
 from flask_login import login_user
 
 
@@ -38,11 +38,6 @@ class RouteService:
                 min = len(route.find_objects())
 
         return best_route
-
-
-class PassPointService:
-    def save_pass_point(self, pass_points, route):
-        return [PassPoint(route, **passpoint) for passpoint in pass_points]
 
 
 class ObjectService:

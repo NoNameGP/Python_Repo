@@ -94,24 +94,6 @@ class Object(db.Model, BaseModel, Coordinate):
         }
 
 
-class PassPoint(db.Model, BaseModel, Coordinate):
-    id = db.Column(db.Integer, primary_key=True)
-    route = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
-    passPointOwner = relationship('Route', back_populates='passPoints')
-
-    def __init__(self, route, X, Y):
-        self.route = route.id
-        self.X = X
-        self.Y = Y
-
-    def __repr__(self):
-        return f"PassPoint {self.route}: {self.pointX},{self.pointY}"
-
-    def to_dict(self):
-        return {
-            'route': self.route,
-            'point': {'X': self.X, 'Y': self.Y}
-        }
 
 
 class Route(db.Model, BaseModel):
@@ -123,7 +105,6 @@ class Route(db.Model, BaseModel):
     arrival = db.Column(db.String(255))
 
     objects = relationship('Object', back_populates='objectOwner')
-    passPoints = relationship('PassPoint', back_populates='passPointOwner')
 
     def __init__(self, user, departure, arrival):
         self.user = user.id
@@ -138,13 +119,10 @@ class Route(db.Model, BaseModel):
     def find_objects(self):
         return self.objects
 
-    def find_pass_points(self):
-        return self.passPoints
 
     def to_dict(self):
         return {
             'departure' : self.departure,
             'arrival' : self.arrival,
-            'objects' : [object.to_dict() for object in self.objects],
-            'passpoints' : [passPoint.to_dict() for passPoint in self.passPoints]
+            'objects' : [object.to_dict() for object in self.objects]
         }

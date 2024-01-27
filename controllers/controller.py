@@ -52,9 +52,6 @@ class RouteResource(Resource):
         db.session.add(route)
         db.session.commit()
 
-        pass_point_controller = PassPointController()
-        pass_point_controller.save_pass_points(routeReq.pass_points, route)
-
         object_controller = ObjectController()
         object_controller.save_object(routeReq.objects, route)
 
@@ -90,19 +87,7 @@ class MarkResourece(Resource):
         return BaseResponse(True, '즐겨 찾기 조회 성공', data=mark).to_response()
 
 
-class PassPointController:
-    global pass_point_service
-
-    def __init__(self):
-        self.pass_point_service = PassPointService()
-
-    def save_pass_points(self, pass_points, route):
-        passpoints = self.pass_point_service.save_pass_point(pass_points, route)
-        db.session.bulk_save_objects(passpoints)
-
-
 class ObjectController:
-    global object_service
 
     def __init__(self):
         self.object_service = ObjectService()

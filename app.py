@@ -78,9 +78,9 @@ class YOLOController:
 
             YOLOService().process_video_detection(results, self.class_names)
 
-            if cv2.waitKey(1) & 0xFF == ord('q'):  # STOP API 만들기
+            if cv2.waitKey() == ord('q'):  # STOP API 만들기
+                self.cap.release()
                 break
-        self.cap.release()
 
 
 @app.route('/')

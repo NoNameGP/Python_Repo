@@ -26,8 +26,8 @@ socketio = SocketIO(app)
 
 
 class ClassNames:
-    coco = ['person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'train',
-            'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign', 'parking meter',
+    coco = ['person', 'bicycle', 'car', 'motorbike', 'aeroplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
+            'fire hydrant', 'stop sign', 'parking meter',
             'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra',
             'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis',
             'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard',
@@ -42,6 +42,9 @@ class ClassNames:
 
 class YOLOService:
     def process_video_detection(self, results, class_names):
+
+        global class_name
+
         for r in results:
             data = []
             boxes = r.boxes
@@ -53,17 +56,20 @@ class YOLOService:
                 cls = int(box.cls[0])
                 if cls in [0, 1, 2, 3, 5, 7, 9]:
                     class_name = class_names[cls]
+                    data.append([x1, y1, x2, y2, class_name, conf])
 
-                data.append([x1, y1, x2, y2, class_name, conf])
             # # YOLO 결과 변수들을 클라이언트로 전송
             emit('yolo_result', data)
 
 
 class YOLOController:
-    def __init__(self, model="../YOLO-Weights/best.pt"):
+
+    path = "../YOLO-Weights/"
+
+    def __init__(self, model="best.pt"):
         self.cap = cv2.VideoCapture(0)
-        self.model = YOLO(model)
-        self.class_names = ClassNames.best
+        self.model = YOLO(self.path+model)
+        self.class_names = ClassNames.best if model == "best.pt" else ClassNames.coco
 
     def video_detection(self):
         while True:

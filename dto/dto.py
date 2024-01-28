@@ -13,7 +13,6 @@ class RouteDTO:
     email: str
     departure: str
     arrival: str
-    pass_points: List[Point]
     objects: List[Point]
 
 

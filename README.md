@@ -38,8 +38,6 @@
 - flask-socketio
 - Flask-Migrate
 - Flask-SQLAlchemy
-- Flask-login
-- Flask-Bcrypt
 
 **Database**
 - sqlite
@@ -57,7 +55,4 @@
 
 ## 💾 데이터베이스 ERD
 ![erd](https://github.com/NoNameGP/Python_Repo/assets/106591445/69b8832e-f3f5-4c89-8a36-a6a177f530f7)
-
-## 최적의 길찾기 알고리즘
-![viewMe 알고리즘](https://github.com/NoNameGP/Python_Repo/assets/106591445/1796955e-5847-4340-b566-a03a7ec43277)
 
